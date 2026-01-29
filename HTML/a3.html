@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Foto Parsel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            background: linear-gradient(to right, #e67e22, #d35400);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .gallery-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #f39c12;
+            display: inline-block;
+        }
+        
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .photo-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .photo-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .photo-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .photo-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+        
+        .photo-card:hover .photo-img {
+            transform: scale(1.05);
+        }
+        
+        .photo-content {
+            padding: 15px;
+        }
+        
+        .photo-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .photo-desc {
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+        }
+        
+        .photo-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #95a5a6;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 10px;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.3);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(to right, #2980b9, #1d6fa5);
+        }
+        
+        .category-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: #f39c12;
+            color: white;
+            border-color: #e67e22;
+        }
+        
+        .instructions {
+            background: #f8f4e9;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 25px 0;
+        }
+        
+        .instructions h3 {
+            color: #d35400;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .instructions li {
+            margin-bottom: 5px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #7f8c8d;
+            font-size: 0.95rem;
+            margin-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .photo-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .gallery-container {
+                padding: 20px;
+            }
+            
+            .category-filters {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .filter-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📸 Koleksi Foto Parsel</h1>
+            <p class="subtitle">Kumpulan foto parsel hadiah untuk berbagai acara spesial. Klik foto untuk melihat ukuran penuh atau unduh.</p>
+        </header>
+        
+        <main>
+           
+            
+            <div class="gallery-container">
+                <h2 class="section-title">Foto Parsel Terbaru</h2>
+                
+                <div class="category-filters">
+                    <button class="filter-btn active" data-category="all">Semua</button>
+                    <button class="filter-btn" data-category="birthday">Ulang Tahun</button>
+                    <button class="filter-btn" data-category="wedding">Pernikahan</button>
+                    <button class="filter-btn" data-category="baby">Bayi</button>
+                    <button class="filter-btn" data-category="holiday">Hari Libur</button>
+                </div>
+                
+                <div class="photo-grid">
+                    <!-- Foto 1 -->
+                    <div class="photo-card" data-category="birthday">
+                        <a href="images/wonyoung-ive-kpop-hd-wallpaper-uhdpaper.com-233@5@i.jpg" target="_blank" class="photo-link">
+                            <img src="images/wonyoung-ive-kpop-hd-wallpaper-uhdpaper.com-233@5@i.jpg" alt="Parsel Ulang Tahun Mewah" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Jang Wonyoung</h3>
+                                <p class="photo-desc">Parsel lengkap dengan kue, bunga, dan hadiah eksklusif</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Birthday</span>
+                                </div>
+                                <a href="images/wonyoung-ive-kpop-hd-wallpaper-uhdpaper.com-233@5@i.jpg" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 2 -->
+                    <div class="photo-card" data-category="wedding">
+                        <a href="Images/liz.jpg" target="_blank" class="photo-link">
+                            <img src="Images/liz.jpg" alt="Parsel Pernikahan Elegan" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Liz</h3>
+                                <p class="photo-desc">Desain mewah dengan tema emas dan putih untuk hari spesial</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Wedding</span>
+                                </div>
+                                <a href="Images/liz.jpg" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 3 -->
+                    <div class="photo-card" data-category="baby">
+                        <a href="https://placehold.co/800x600/2196F3/fff?text=Parsel+Bayi" target="_blank" class="photo-link">
+                            <img src="https://placehold.co/600x400/2196F3/fff?text=Parsel+Bayi" alt="Parsel Selamat Datang Bayi" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Parsel Selamat Datang Bayi</h3>
+                                <p class="photo-desc">Parsel lembut dengan mainan bayi dan perlengkapan premium</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Baby</span>
+                                </div>
+                                <a href="https://placehold.co/800x600/2196F3/fff?text=Parsel+Bayi" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 4 -->
+                    <div class="photo-card" data-category="holiday">
+                        <a href="https://placehold.co/800x600/4CAF50/fff?text=Parsel+Natal" target="_blank" class="photo-link">
+                            <img src="https://placehold.co/600x400/4CAF50/fff?text=Parsel+Natal" alt="Parsel Hari Raya" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Parsel Hari Raya Spesial</h3>
+                                <p class="photo-desc">Parsel lengkap dengan tema liburan dan kudapan lezat</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Holiday</span>
+                                </div>
+                                <a href="https://placehold.co/800x600/4CAF50/fff?text=Parsel+Natal" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 5 -->
+                    <div class="photo-card" data-category="birthday">
+                        <a href="https://placehold.co/800x600/9C27B0/fff?text=Parsel+Anak" target="_blank" class="photo-link">
+                            <img src="https://placehold.co/600x400/9C27B0/fff?text=Parsel+Anak" alt="Parsel Ulang Tahun Anak" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Parsel Ulang Tahun Anak</h3>
+                                <p class="photo-desc">Desain ceria dengan mainan edukatif dan camilan sehat</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Birthday</span>
+                                </div>
+                                <a href="https://placehold.co/800x600/9C27B0/fff?text=Parsel+Anak" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 6 -->
+                    <div class="photo-card" data-category="wedding">
+                        <a href="https://placehold.co/800x600/F50057/fff?text=Parsel+Pengantin" target="_blank" class="photo-link">
+                            <img src="https://placehold.co/600x400/F50057/fff?text=Parsel+Pengantin" alt="Parsel Khusus Pengantin" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Parsel Khusus Pengantin</h3>
+                                <p class="photo-desc">Parsel romantis dengan champagne dan cokelat premium</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Wedding</span>
+                                </div>
+                                <a href="https://placehold.co/800x600/F50057/fff?text=Parsel+Pengantin" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 7 -->
+                    <div class="photo-card" data-category="baby">
+                        <a href="https://placehold.co/800x600/00BCD4/fff?text=Parsel+Bayi+Perempuan" target="_blank" class="photo-link">
+                            <img src="https://placehold.co/600x400/00BCD4/fff?text=Parsel+Bayi+Perempuan" alt="Parsel Bayi Perempuan" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Parsel Bayi Perempuan</h3>
+                                <p class="photo-desc">Parsel lembut dengan pakaian bayi dan mainan edukatif</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Baby</span>
+                                </div>
+                                <a href="https://placehold.co/800x600/00BCD4/fff?text=Parsel+Bayi+Perempuan" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                    
+                    <!-- Foto 8 -->
+                    <div class="photo-card" data-category="holiday">
+                        <a href="https://placehold.co/800x600/FF5722/fff?text=Parsel+Lebaran" target="_blank" class="photo-link">
+                            <img src="https://placehold.co/600x400/FF5722/fff?text=Parsel+Lebaran" alt="Parsel Hari Raya Idul Fitri" class="photo-img">
+                            <div class="photo-content">
+                                <h3 class="photo-title">Parsel Lebaran Spesial</h3>
+                                <p class="photo-desc">Parsel lengkap dengan kue kering dan parcel sembako premium</p>
+                                <div class="photo-meta">
+                                    <span>Ukuran: 800x600</span>
+                                    <span>Holiday</span>
+                                </div>
+                                <a href="https://placehold.co/800x600/FF5722/fff?text=Parsel+Lebaran" download class="download-btn">Unduh Foto</a>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer>
+            <p>&copy; 2026 Koleksi Foto Parsel. Semua foto adalah contoh placeholder untuk keperluan demonstrasi.</p>
+            <p>Untuk keperluan komersial, silakan hubungi pemilik konten asli.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Filter functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const photoCards = document.querySelectorAll('.photo-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    const category = this.getAttribute('data-category');
+                    
+                    // Filter photos
+                    photoCards.forEach(card => {
+                        if (category === 'all' || card.getAttribute('data-category') === category) {
+                            card.style.display = 'block';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            });
+            
+            // Add download confirmation
+            const downloadButtons = document.querySelectorAll('.download-btn');
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // In a real application, this would trigger the download
+                    // For demo purposes, we'll show a confirmation message
+                    const confirmed = confirm('Apakah Anda ingin mengunduh foto ini?');
+                    if (!confirmed) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
